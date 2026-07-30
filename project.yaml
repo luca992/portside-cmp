@@ -1,0 +1,9 @@
+modules:
+  - android-app
+  - core
+  - ios-app
+  - ios-app-glass
+  - ios-app-swiftui
+  - jvm-app
+  - shared
+  - web-app

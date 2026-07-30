@@ -1,0 +1,11 @@
+build/
+.kotlin/
+.idea/
+.DS_Store
+local.properties
+xcuserdata/
+ios-app/Frameworks/MapLibre.xcframework/
+android-app/keystore.properties
+capture-scripts/sckrecord
+capture-scripts/__pycache__/
+tools/binaryen-version_123/

@@ -1,0 +1,31 @@
+product: android/app
+
+dependencies:
+  - ../shared
+  - androidx.activity:activity-compose:1.13.0
+
+settings:
+  kotlin:
+    version: 2.4.0
+  compose:
+    enabled: true
+    version: 1.12.0-beta02
+  junit: junit-4
+  android:
+    compileSdk: 37
+    applicationId: com.portside.app
+    namespace: com.portside.app
+    signing: enabled
+    resourcePackaging:
+      # AGP 9.2 rejects stray META-INF files that ship in some KMP artifacts
+      # during MergeJavaRes: version markers from compose, and the per-library
+      # LICENSE.txt files bundled by the JetBrains lifecycle 2.11 artifacts.
+      excludes:
+        - META-INF/*.version
+        # Per-library LICENSE/NOTICE files nested under META-INF (jetbrains
+        # and androidx artifacts both ship them).
+        - META-INF/org/jetbrains/**
+        - META-INF/androidx/**
+        - META-INF/LICENSE*
+        - META-INF/NOTICE*
+

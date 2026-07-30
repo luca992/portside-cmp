@@ -1,0 +1,33 @@
+package portside.ui.components
+
+import androidx.compose.ui.graphics.ImageBitmap
+
+/**
+ * Per-platform sphere-raster transport, each target on its fastest path:
+ * Android samples ARGB ints straight into Bitmap.setPixels; Skiko targets
+ * (desktop, iOS, web) sample straight into the BGRA byte layout that
+ * installPixels wants, skipping a per-keyframe conversion pass.
+ *
+ * [produce] returns a FRESH bitmap each call: the UI may still be drawing
+ * the previously published one frames later, and recycling buffers under it
+ * desynchronizes the drift compensation (the globe visibly rocks).
+ */
+internal interface SphereSurface {
+    /**
+     * Suspends between sampling chunks (cooperative yield): on wasm the
+     * producer shares the UI thread, and one monolithic sampling task lands
+     * as a long task that overruns frame deadlines — chunking lets the
+     * browser paint between slices. On real threads the yields are ~free.
+     */
+    suspend fun produce(
+        warp: GlobeWarp,
+        tex: IntArray,
+        texW: Int,
+        centerLonDeg: Double,
+    ): ImageBitmap
+}
+
+/** Sampling slice size: ~5 slices for a phone-band raster. */
+internal const val SPHERE_CHUNK = 60_000
+
+internal expect fun createSphereSurface(width: Int, height: Int): SphereSurface
